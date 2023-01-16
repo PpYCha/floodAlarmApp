@@ -4,19 +4,11 @@ const actions = actionHelper();
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case actions.UPDATE_USER:
+    case actions.UPDATE_CURRENT_USER:
       return {...state, currentUser: action.payload};
 
-    case actions.RESET_USER:
+    case actions.RESET_CURRENT_USER:
       return {...state, currentUser: null};
-
-      return {
-        ...state,
-        userAccount: {
-          username: '',
-          password: '',
-        },
-      };
 
     default:
       throw new Error('No matched action!');

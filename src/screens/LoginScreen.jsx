@@ -32,13 +32,21 @@ const LoginScreen = ({navigation}) => {
   };
 
   const handleLogin = async () => {
-    const res = await postUserSignin(username, password);
+    try {
+      if (!username || !password) {
+        Alert.alert('Username and password are required.', '', [
+          {text: 'OK', onPress: () => {}},
+        ]);
+        return;
+      }
+      const res = await postUserSignin(username, password);
 
-    console.log(res.data.data);
-    dispatch({
-      type: actions.UPDATE_CURRENT_USER,
-      payload: res.data.data,
-    });
+      console.log(res.data.data);
+      dispatch({
+        type: actions.UPDATE_CURRENT_USER,
+        payload: res.data.data,
+      });
+    } catch (error) {}
   };
 
   return (

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    margin: 10,
+    margin: 5,
     paddingLeft: 10,
     color: 'black',
     borderWidth: 1,

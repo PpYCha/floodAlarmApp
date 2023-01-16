@@ -6,52 +6,69 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Button,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+import Logo from '../assets/logo.png';
+import {postUserSignin} from '../api/user_api';
+import {useValue} from '../context/ContextProvider';
+import actionHelper from '../context/actionHelper';
+import {Actions} from 'react-native-gifted-chat';
 
 const LoginScreen = ({navigation}) => {
+  const {dispatch} = useValue();
+
+  const actions = actionHelper();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  handleSubmit = () => {
-    // handle form submission logic here
+  const handlePasswordVisibility = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
+  const handleLogin = async () => {
+    const res = await postUserSignin(username, password);
+
+    console.log(res.data.data);
+    dispatch({
+      type: actions.UPDATE_CURRENT_USER,
+      payload: res.data.data,
+    });
   };
 
   return (
-    <View style={styles.main}>
-      <View style={styles.topView}>
-        <Text style={styles.text}>Flood Alarm</Text>
-        <Text style={styles.text}>APPLICATION</Text>
+    <View style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image source={Logo} style={styles.logo} />
+        <Text style={styles.logoText}>FLOOD ALARM</Text>
       </View>
-      <View style={styles.bottomView}>
+      <View style={styles.formContainer}>
         <CustomInput
-          placeholder="user"
+          placeholder="Username"
+          value={username}
           onChangeText={text => setUsername(text)}
         />
         <CustomInput
-          placeholder="password"
-          secureTextEntry={true}
+          placeholder="Password"
+          value={password}
           onChangeText={text => setPassword(text)}
+          secureTextEntry={true}
         />
+
+        <CustomButton buttonTitle="LOGIN" onPress={handleLogin} />
         <CustomButton
-          buttonTitle="LOGIN"
+          buttonTitle="SIGN UP"
           onPress={() => {
-            if (username != '' || password != '') {
-              navigation.navigate('Home');
-              console.log('if login pressed');
-            } else {
-              Alert.alert('Please input your password or email');
-              console.log('else login pressed');
-            }
+            navigation.navigate('SignUpScreen');
           }}
         />
       </View>
+      <View></View>
     </View>
   );
 };
@@ -59,80 +76,30 @@ const LoginScreen = ({navigation}) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  main: {
-    topView: {flex: 1},
-    text: {fontSize: 40, fontWeight: '800', textAlign: 'center'},
-    bottomView: {flex: 2},
-    container: {
-      flex: 1,
-
-      backgroundColor: 'transparent',
-      alignContent: 'center',
-      justifyContent: 'center',
-    },
-    image: {
-      flex: 1,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  sign: {
-    paddingTop: 40,
-    paddingLeft: 10,
-    color: '#8C55AA',
-    fontFamily: 'Ubuntu',
+  logoContainer: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  logo: {
+    width: 300,
+    height: 300,
+  },
+  logoText: {
+    fontSize: 30,
     fontWeight: 'bold',
-    fontSize: 23,
   },
-  input: {
-    width: '76%',
-    color: 'rgb(38, 50, 56)',
-    fontWeight: '700',
-    fontSize: 14,
-    letterSpacing: 1,
-    backgroundColor: 'rgba(136, 126, 126, 0.04)',
-    padding: 10,
-    borderWidth: 0,
-    borderRadius: 20,
-    borderColor: 'rgba(0, 0, 0, 0.02)',
-    marginBottom: 50,
-    marginLeft: 46,
-    textAlign: 'center',
-    marginBottom: 27,
-    fontFamily: 'Ubuntu',
+  formContainer: {
+    alignItems: 'center',
+    marginTop: 50,
   },
-  form: {
-    paddingTop: 40,
-  },
-  submit: {
-    cursor: 'pointer',
-    borderRadius: 5,
-    color: '#fff',
-    backgroundColor: 'linear-gradient(to right, #9C27B0, #E040FB)',
-    borderWidth: 0,
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingBottom: 10,
-    paddingTop: 10,
-    fontFamily: 'Ubuntu',
-    width: '100%',
-    fontSize: 13,
-    shadowColor: '#000000',
-    shadowOpacity: 0.04,
-    shadowRadius: 20,
-    shadowOffset: {width: 0, height: 20},
-    elevation: 20,
-  },
-  forgot: {
-    textShadowColor: 'rgba(117, 117, 117, 0.12)',
-    textShadowRadius: 0,
-    textShadowOffset: {width: 0, height: 3},
-    color: '#E1BEE7',
-    paddingTop: 15,
-  },
-  text: {
-    textShadowColor: 'rgba(117, 117, 117, 0.12)',
-    textShadowRadius: 0,
-    textShadowOffset: {width: 0, height: 3},
-    color: '#E1BEE7',
-    textDecorationLine: 'none',
+  Container: {
+    alignItems: 'center',
+    marginTop: 50,
   },
 });

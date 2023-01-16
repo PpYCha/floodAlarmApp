@@ -4,12 +4,14 @@ import reducer from './reducer';
 const initialState = {
   currentUser: null,
   loading: false,
-  alert: {open: false, severity: 'info', message: ''},
-  openRelated: false,
-  openResearch: false,
-  openExtension: false,
-  openAdministrative: false,
-  openInvolvement: false,
+  user: {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    address: '',
+    username: '',
+    password: '',
+  },
 };
 
 const Context = createContext(initialState);

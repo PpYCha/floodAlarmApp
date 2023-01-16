@@ -1,14 +1,19 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import Navigation from './Navigation';
+import {useValue} from '../context/ContextProvider';
 
-const Tab = createBottomTabNavigator();
+import Navigation from './Navigation';
+import AuthNavigation from './AuthNavigation';
+import {NavigationContainer} from '@react-navigation/native';
 
 const Routes = () => {
+  const {
+    state: {currentUser, loading},
+    dispatch,
+  } = useValue();
+
   return (
     <NavigationContainer>
-      <Navigation />
+      {currentUser ? <Navigation /> : <AuthNavigation />}
     </NavigationContainer>
   );
 };

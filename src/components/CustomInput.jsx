@@ -1,16 +1,15 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React from 'react';
 
-const CustomTextInput = ({placeholder, ...rest}) => {
+const CustomTextInput = ({placeholder, ...props}) => {
   return (
     <View style={styles.action}>
-      {/* <FontAwesome name={fontAwesome} color="#333333" size={20} /> */}
       <TextInput
         placeholder={placeholder}
         placeholderTextColor="black"
         autoCorrect={false}
         style={styles.textInput}
-        {...rest}
+        {...props}
       />
     </View>
   );
@@ -21,8 +20,6 @@ export default CustomTextInput;
 const styles = StyleSheet.create({
   action: {
     flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 10,
 
     paddingBottom: 5,
   },
@@ -31,8 +28,8 @@ const styles = StyleSheet.create({
     margin: 10,
     paddingLeft: 10,
     color: 'black',
-
-    backgroundColor: 'white',
+    borderWidth: 1,
+    backgroundColor: 'efefef',
     borderRadius: 10,
   },
 });

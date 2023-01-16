@@ -16,10 +16,10 @@ export default CustomButton;
 const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
-    width: '100%',
-    height: windowHeight / 15,
-    backgroundColor: 'blue',
-    padding: 10,
+    width: 250,
+    height: 35,
+    backgroundColor: '#0085cc',
+    padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,

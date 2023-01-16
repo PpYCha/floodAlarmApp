@@ -40,13 +40,31 @@ const LoginScreen = ({navigation}) => {
         return;
       }
       const res = await postUserSignin(username, password);
-
-      console.log(res.data.data);
-      dispatch({
-        type: actions.UPDATE_CURRENT_USER,
-        payload: res.data.data,
-      });
+      if (res.data.status === 200) {
+        dispatch({
+          type: actions.UPDATE_CURRENT_USER,
+          payload: res.data.data,
+        });
+        Alert.alert(res.data.message, '', [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]);
+      } else {
+        Alert.alert(res.data.message, 'fail ine', [
+          {text: 'OK', onPress: () => {}},
+        ]);
+      }
     } catch (error) {}
+
+    // const res = await postUserSignin(username, password);
+
+    // console.log(res.data.data);
+    // dispatch({
+    //   type: actions.UPDATE_CURRENT_USER,
+    //   payload: res.data.data,
+    // });
   };
 
   return (

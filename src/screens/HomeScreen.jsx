@@ -1,61 +1,116 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
-import waveShapeSvg from '../assets/waveShape.svg';
-import WaterGauge from '../components/WaterGauge';
+import {StyleSheet, Image, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {getWaterMeauser} from '../api/water_api';
+import CustomButton from '../components/CustomButton';
+import {Card, Button, Text, Divider} from 'react-native-paper';
 
 const HomeScreen = () => {
-  // const [height, setHeight] = useState(20);
-  // const tkRef = useRef(null);
+  const [waterMeasure, setWaterMeasure] = useState([{}]);
+  const [date, setDate] = useState();
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
 
-  // useEffect(() => {
-  //   if (tkRef.current) {
-  //     const amount = parseFloat(tkRef.current.getAttribute('data-amount'));
-  //     const newHeight = amount * 0.8 + 20;
-  //     setHeight(newHeight);
-  //   }
-  // }, []);
+  const color =
+    waterMeasure.measure <= 49
+      ? '#f1c01d'
+      : waterMeasure.measure >= 50 && waterMeasure.measure <= 74
+      ? '#f2891c'
+      : '#bc1421';
 
-  return <WaterGauge amount={50} />;
+  const textColor =
+    waterMeasure.measure <= 49
+      ? '#FFFFFF'
+      : waterMeasure.measure >= 50 && waterMeasure.measure <= 74
+      ? '#000000'
+      : '#FFFFFF';
+
+  const colorCode =
+    waterMeasure.measure <= 49
+      ? 'YELLOW'
+      : waterMeasure.measure >= 50 && waterMeasure.measure <= 74
+      ? 'ORANGE'
+      : 'RED';
+
+  const fetchWaterMeasure = async () => {
+    let res = await getWaterMeauser();
+    console.log(res.created_at);
+    const timestamp = res.created_at;
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    setDate(formattedDate);
+    setWaterMeasure(res);
+  };
+
+  useEffect(() => {
+    fetchWaterMeasure();
+  }, []);
+
+  const styles = StyleSheet.create({
+    card: {
+      margin: 16,
+      flex: 1,
+      backgroundColor: color,
+    },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    text: {
+      color: textColor,
+    },
+  });
+
+  return (
+    <Card style={styles.card}>
+      <Card.Content>
+        <Text style={styles.text} variant="displayLarge">
+          {colorCode}
+        </Text>
+        <Text style={styles.text} variant="titleSmall">
+          As of: {date}
+        </Text>
+        {/* <Text style={[styles.text, {marginBottom: 10}]} variant="displayMedium">
+          Current Water Level
+        </Text> */}
+
+        {/* 
+        <Text style={styles.text} variant="headlineMedium">
+          Legend
+        </Text>
+        <Text style={styles.text} variant="titleLarge">
+          Flooding is possible
+        </Text>
+        <Text style={styles.text} variant="titleLarge">
+          Flooding is threatening
+        </Text>
+        <Text style={styles.text} variant="titleLarge">
+          Serious flooding expected in low-lying areas
+        </Text> */}
+        <View style={{aspectRatio: 1}}>
+          <Image
+            source={require('../assets/warning.png')}
+            style={{width: '100%', height: '100%', resizeMode: 'cover'}}
+          />
+        </View>
+      </Card.Content>
+
+      <Card.Actions>
+        <Button
+          mode="contained"
+          onPress={() => {
+            fetchWaterMeasure();
+          }}>
+          REFRESH
+        </Button>
+      </Card.Actions>
+    </Card>
+  );
 };
 
 export default HomeScreen;
-
-// const styles = StyleSheet.create({
-//   tk: {
-//     position: 'relative',
-//     width: '40%',
-//     height: 130,
-//     paddingTop: 50,
-//     margin: 'auto',
-//     backgroundColor: 'rgba(56, 56, 56, 0.8)',
-//     borderRadius: 40,
-//     borderBottomWidth: 3,
-//     borderBottomColor: '#000',
-//     textAlign: 'center',
-//     zIndex: 1,
-//     overflow: 'hidden',
-//   },
-//   lq: {
-//     backgroundColor: 'rgba(128, 128, 128, 0.99)',
-//     height: '80%',
-//     top: -2,
-//     borderRadius: 40,
-//     borderBottomWidth: 3,
-//     borderBottomColor: '#000',
-//     position: 'absolute',
-//     left: 0,
-//     right: 0,
-//   },
-//   tkAfter: {
-//     content: '',
-//     position: 'absolute',
-//     top: 0,
-//     left: 0,
-//     right: 0,
-//     bottom: 0,
-//     height: '20%',
-//     borderWidth: 1,
-//     borderColor: '#000',
-//     borderRadius: 100,
-//   },
-// });

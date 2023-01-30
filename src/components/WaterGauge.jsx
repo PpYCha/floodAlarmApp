@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Animated} from 'react-native';
 
 function WaterGauge({amount}) {
   const gaugeHeight = amount * 0.8 + 20;
@@ -9,7 +9,7 @@ function WaterGauge({amount}) {
     height: 130,
     paddingTop: 50,
     margin: 'auto',
-    backgroundColor: 'rgba(56, 56, 56, 0.8)',
+    backgroundColor: 'rgb(76, 158, 214)',
     borderRadius: 40,
     borderBottomWidth: 3,
     borderBottomColor: '#000',
@@ -17,22 +17,23 @@ function WaterGauge({amount}) {
     overflow: 'hidden',
   };
   const gaugeStyles = {
-    backgroundColor: 'rgba(128, 128, 128, 0.99)',
+    backgroundColor: 'rgb(176, 224, 233)',
     height: gaugeHeight,
     borderRadius: 40,
     borderBottomWidth: 3,
-    borderBottomColor: '#000',
+    borderBottomColor: 'rgb(186, 206, 237)',
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
   };
+
   return (
     <View style={containerStyles}>
       <Text style={{textAlign: 'center', paddingTop: '40%', color: 'white'}}>
         {amount}%
       </Text>
-      <View style={gaugeStyles} />
+      <View style={gaugeStyles}></View>
     </View>
   );
 }

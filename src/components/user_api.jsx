@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {defaultUrl} from './defaultUrl';
+import {defaultUrl} from '../api/defaultUrl';
 
 export const postUser = async ({
   firstName,
@@ -36,6 +36,6 @@ export const postUserSignin = async (username, password) => {
     return res;
   } catch (error) {
     console.log('post signin error:', error);
-    return error.message;
+    return error;
   }
 };

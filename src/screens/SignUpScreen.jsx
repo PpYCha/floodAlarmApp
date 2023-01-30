@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
-import {postUser} from '../api/user_api';
+import {postUser} from '../components/user_api';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomInput';
 import actionHelper from '../context/actionHelper';
 import {useValue} from '../context/ContextProvider';
+import {TextInput, Button} from 'react-native-paper';
 
 const SignUpScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
@@ -63,40 +64,49 @@ const SignUpScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <CustomTextInput
-        placeholder="Firstname"
+      <TextInput
+        mode="outlined"
+        label="Firstname"
         value={firstName}
         onChangeText={text => setFirstName(text)}
       />
-      <CustomTextInput
-        placeholder="Middlename"
+
+      <TextInput
+        mode="outlined"
+        label="Middlename"
         value={middleName}
         onChangeText={text => setMiddleName(text)}
       />
-      <CustomTextInput
-        placeholder="Lastname"
+      <TextInput
+        mode="outlined"
+        label="Lastname"
         value={lastName}
         onChangeText={text => setLastName(text)}
       />
-      <CustomTextInput
-        placeholder="Address"
+      <TextInput
+        mode="outlined"
+        label="Address"
         value={address}
         onChangeText={text => setAddress(text)}
       />
-      <CustomTextInput
-        placeholder="Username"
+      <TextInput
+        mode="outlined"
+        label="Username"
         value={username}
         onChangeText={text => setUsername(text)}
       />
-      <CustomTextInput
-        placeholder="Password"
+      <TextInput
+        mode="outlined"
+        label="Password"
         value={password}
         onChangeText={text => setPassword(text)}
       />
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <CustomButton buttonTitle="Register" onPress={handleRegister} />
+        <Button style={styles.button} mode="contained" onPress={handleRegister}>
+          REGISTER
+        </Button>
       )}
     </View>
   );
@@ -106,6 +116,13 @@ export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    flex: 1,
+    padding: 16,
+  },
+  textInput: {
+    width: '100%',
+  },
+  button: {
+    marginTop: 10,
   },
 });

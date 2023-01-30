@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 
-const WaterScreen = () => {
+const MessageScreen = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const WaterScreen = () => {
   );
 };
 
-export default WaterScreen;
+export default MessageScreen;
 
 const styles = StyleSheet.create({
   container: {

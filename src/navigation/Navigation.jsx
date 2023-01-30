@@ -5,10 +5,18 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import WaterScreen from '../screens/WaterScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LogoutScreen from '../screens/LogoutScreen';
+import {useValue} from '../context/ContextProvider';
+import actionHelper from '../context/actionHelper';
+import MessageScreen from '../screens/message/MessageScreen';
 
 const Tab = createBottomTabNavigator();
 
 const Navigation = () => {
+  const {dispatch} = useValue();
+
+  const actions = actionHelper();
+
   return (
     <>
       <Tab.Navigator
@@ -21,7 +29,9 @@ const Navigation = () => {
                 ? 'ios-information-circle'
                 : 'ios-information-circle-outline';
             } else if (route.name === 'Message') {
-              iconName = focused ? 'book' : 'book-outline';
+              iconName = focused ? 'chatbubble-sharp' : 'chatbubble-outline';
+            } else if (route.name === 'Logout') {
+              iconName = focused ? 'log-out' : 'log-out-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -30,7 +40,26 @@ const Navigation = () => {
           tabBarInactiveTintColor: 'gray',
         })}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Message" component={WaterScreen} />
+        <Tab.Screen name="Message" component={MessageScreen} />
+        <Tab.Screen
+          name="Logout"
+          component={LogoutScreen}
+          // options={{
+          //   tabBarLabel: 'Logout',
+          //   tabBarIcon: ({color}) => (
+          //     <FontAwesome5 name="sign-out-alt" color={color} size={20} />
+          //   ),
+          // }}
+          listeners={({navigation}) => ({
+            tabPress: e => {
+              e.preventDefault();
+
+              dispatch({
+                type: actions.RESET_CURRENT_USER,
+              });
+            },
+          })}
+        />
       </Tab.Navigator>
     </>
   );

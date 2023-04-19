@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
-import {postUser} from '../components/user_api';
+import {postUser} from '../api/user_api';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomInput';
 import actionHelper from '../context/actionHelper';
 import {useValue} from '../context/ContextProvider';
 import {TextInput, Button} from 'react-native-paper';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 const SignUpScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
@@ -104,7 +104,11 @@ const SignUpScreen = ({navigation}) => {
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <Button style={styles.button} mode="contained" onPress={handleRegister}>
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={handleRegister}
+          icon={() => <Icon name="save-outline" size={20} />}>
           REGISTER
         </Button>
       )}

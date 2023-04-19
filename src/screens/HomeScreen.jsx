@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {getWaterMeauser} from '../api/water_api';
 import CustomButton from '../components/CustomButton';
 import {Card, Button, Text, Divider} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const HomeScreen = () => {
   const [waterMeasure, setWaterMeasure] = useState([{}]);
@@ -38,7 +39,7 @@ const HomeScreen = () => {
 
   const fetchWaterMeasure = async () => {
     let res = await getWaterMeauser();
-    console.log(res.created_at);
+    console.log('home log 41:', res.created_at);
     const timestamp = res.created_at;
     const date = new Date(timestamp);
     const formattedDate = date.toLocaleDateString('en-US', options);
@@ -102,6 +103,7 @@ const HomeScreen = () => {
 
       <Card.Actions>
         <Button
+          icon={() => <Icon name="refresh-outline" size={20} />}
           mode="contained"
           onPress={() => {
             fetchWaterMeasure();

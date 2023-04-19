@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {defaultUrl} from '../api/defaultUrl';
+import {defaultUrl} from './defaultUrl';
 
 export const postUser = async ({
   firstName,

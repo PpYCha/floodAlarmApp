@@ -4,7 +4,7 @@ import {Dimensions} from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import Logo from '../assets/logo.png';
-import {postUserSignin} from '../components/user_api';
+import {postUserSignin} from '../api/user_api';
 import {useValue} from '../context/ContextProvider';
 import actionHelper from '../context/actionHelper';
 import {Actions} from 'react-native-gifted-chat';
@@ -17,9 +17,13 @@ import {
   Provider,
 } from 'react-native-paper';
 import CustomModal from '../components/CustomModal';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const LoginScreen = ({navigation}) => {
-  const {dispatch} = useValue();
+  const {
+    state: {currentUser},
+    dispatch,
+  } = useValue();
 
   const actions = actionHelper();
 
@@ -50,6 +54,7 @@ const LoginScreen = ({navigation}) => {
           type: actions.UPDATE_CURRENT_USER,
           payload: res.data.data,
         });
+        // console.log('result login:', currentUser);
         Alert.alert(res.data.message, '', [
           {
             text: 'OK',
@@ -97,7 +102,7 @@ const LoginScreen = ({navigation}) => {
 
         <Button
           style={styles.button}
-          icon="login"
+          icon={() => <Icon name="log-in-outline" size={20} />}
           mode="contained"
           onPress={() => {
             handleLogin();
@@ -107,10 +112,20 @@ const LoginScreen = ({navigation}) => {
         <Button
           style={styles.button}
           mode="contained"
+          icon={() => <Icon name="create-outline" size={20} />}
           onPress={() => {
             navigation.navigate('SignUpScreen');
           }}>
           SIGN UP
+        </Button>
+        <Button
+          style={styles.button}
+          mode="contained"
+          icon={() => <Icon name="settings-outline" size={20} />}
+          onPress={() => {
+            showModal();
+          }}>
+          SETTINGS
         </Button>
       </View>
       <CustomModal

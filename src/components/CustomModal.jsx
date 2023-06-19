@@ -2,14 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {TextInput, View, Button} from 'react-native';
 import {Modal, Portal, Text, Provider} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DEFAULT_URL_KEY} from '../api/defaultUrl';
 
 const CustomModal = ({visible, showModal, hideModal}) => {
   const containerStyle = {backgroundColor: 'white', padding: 20};
-  const [defaultUrl, setDefaultUrl] = useState(
-    'http://192.168.137.1:8000/api/',
-  );
-
-  const DEFAULT_URL_KEY = 'defaultUrl';
+  const [defaultUrl, setDefaultUrl] = useState('');
 
   useEffect(() => {
     const loadDefaultUrl = async () => {
@@ -25,7 +22,10 @@ const CustomModal = ({visible, showModal, hideModal}) => {
 
   const saveDefaultUrl = async () => {
     try {
-      await AsyncStorage.setItem(DEFAULT_URL_KEY, defaultUrl);
+      await AsyncStorage.setItem(
+        DEFAULT_URL_KEY,
+        `http://${defaultUrl}:8000/api/`,
+      );
       hideModal();
       console.log('Default URL saved successfully');
     } catch (e) {

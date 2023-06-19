@@ -2,10 +2,11 @@ import {StyleSheet, View} from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import {Bubble, GiftedChat, Send, InputToolbar} from 'react-native-gifted-chat';
 import axios from 'axios';
-import {defaultUrl} from '../../api/defaultUrl';
+import {defaultUrl, DEFAULT_URL_KEY} from '../../api/defaultUrl';
 import {useValue} from '../../context/ContextProvider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MessageScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -16,8 +17,13 @@ const MessageScreen = () => {
   } = useValue();
 
   useEffect(() => {
-    axios
-      .get(`${defaultUrl}view-message`)
+    fetchMessage();
+  }, []);
+
+  const fetchMessage = async () => {
+    const savedDefaultUrl = await AsyncStorage.getItem(DEFAULT_URL_KEY);
+    const res = await axios
+      .get(`${savedDefaultUrl}view-message`)
       .then(response => {
         const messageAxios = response.data.data
           .map(message => {
@@ -39,20 +45,14 @@ const MessageScreen = () => {
       .catch(error => {
         console.log('Error 32:', error);
       });
-  }, []);
-
-  // const appendMessages = useCallback(messages => {
-  //   setMessages(previousMessages =>
-  //     GiftedChat.append(previousMessages, messages),
-  //   );
-  //   console.log('append:', messages);
-  // }, []);
+  };
 
   const handleSend = async messages => {
     try {
+      const savedDefaultUrl = await AsyncStorage.getItem(DEFAULT_URL_KEY);
       const newMessage = messages[0];
 
-      const res = await axios.post(`${defaultUrl}add-message`, {
+      const res = await axios.post(`${savedDefaultUrl}add-message`, {
         _id: newMessage._id,
         text: newMessage.text,
         userId: currentUser.id,
@@ -63,6 +63,8 @@ const MessageScreen = () => {
         GiftedChat.append(previousMessages, messages),
       );
       // console.log('result on send:', currentUser);
+
+      fetchMessage();
     } catch (error) {
       console.log('error:', error);
     }
@@ -95,7 +97,7 @@ const MessageScreen = () => {
             backgroundColor: isCurrentUser ? '#2e64e5' : '#E4E6EB',
           },
           right: {
-            backgroundColor: isCurrentUser ? '#2e64e5' : '#E4E6EB',
+            backgroundColor: isCurrentUser ? '#E4E6EB' : '#2e64e5',
           },
         }}
         textStyle={{
@@ -103,7 +105,7 @@ const MessageScreen = () => {
             color: isCurrentUser ? '#E4E6EB' : '#333',
           },
           right: {
-            color: isCurrentUser ? '#E4E6EB' : '#333',
+            color: isCurrentUser ? '#333' : '#E4E6EB',
           },
         }}
       />

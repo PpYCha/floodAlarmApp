@@ -1,5 +1,8 @@
 import axios from 'axios';
-import {defaultUrl} from './defaultUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DEFAULT_URL_KEY} from './defaultUrl';
+
+// import {defaultUrl} from './defaultUrl';
 
 export const postUser = async ({
   firstName,
@@ -10,7 +13,9 @@ export const postUser = async ({
   password,
 }) => {
   try {
-    const res = await axios.post(`${defaultUrl}add-user`, {
+    const savedDefaultUrl = await AsyncStorage.getItem(DEFAULT_URL_KEY);
+
+    const res = await axios.post(`${savedDefaultUrl}add-user`, {
       firstName: firstName,
       middleName: middleName,
       lastName: lastName,
@@ -18,7 +23,7 @@ export const postUser = async ({
       username: username,
       password: password,
     });
-    console.log('Diasan:', res);
+    console.log('result postUser:', res);
     return res;
   } catch (error) {
     console.log('post error:', error);
@@ -28,7 +33,9 @@ export const postUser = async ({
 
 export const postUserSignin = async (username, password) => {
   try {
-    const res = await axios.post(`${defaultUrl}user-signin`, {
+    const savedDefaultUrl = await AsyncStorage.getItem(DEFAULT_URL_KEY);
+
+    const res = await axios.post(`${savedDefaultUrl}user-signin`, {
       username: username,
       password: password,
     });

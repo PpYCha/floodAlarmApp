@@ -72,7 +72,11 @@ const LoginScreen = ({navigation}) => {
           {text: 'OK', onPress: () => {}},
         ]);
       } else {
-        console.error(error);
+        Alert.alert(
+          'No connection',
+          `Please check your ip address connection. ${error}`,
+          [{text: 'OK', onPress: () => {}}],
+        );
       }
     }
   };
